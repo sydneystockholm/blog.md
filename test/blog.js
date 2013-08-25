@@ -29,11 +29,14 @@ describe('Blog', function () {
         });
     });
 
-    it('should verify that posts have a valid title', function (done) {
+    it('should give posts a default title', function (done) {
         var blog = new Blog([
             { id: 1, date: '2012-10-01' }
         ]);
-        blog.on('error', function () {
+        blog.on('load', function () {
+            var post = blog.posts[0];
+            assert.equal(post.title, 'Untitled');
+            assert.equal(post.slug, 'untitled');
             done();
         });
     });
