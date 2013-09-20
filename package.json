@@ -18,7 +18,9 @@
     "sift": "*"
   },
   "devDependencies": {
-    "mocha": "*"
+    "mocha": "*",
+    "istanbul": "*",
+    "jshint": "*"
   },
   "engines": {
     "node": ">= 0.10.0"

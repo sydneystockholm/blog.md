@@ -569,8 +569,7 @@ describe('Blog', function () {
 
     it('should provide a next/prev link on each post', function () {
         var source = new EventEmitter()
-          , blog = new Blog(source)
-          , post;
+          , blog = new Blog(source);
         source.emit('new_post', { id: 1, title: 'Foo', date: new Date('2013-06-15') });
         assert.equal(blog.posts[0].id, 1);
         assert(!blog.posts[0].next && !blog.posts[0].prev);
