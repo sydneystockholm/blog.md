@@ -1,8 +1,6 @@
-var lib_dir = process.env.JS_COV ? '../lib-cov/': '../lib/';
-
 var assert = require('assert')
-  , Blog = require(lib_dir + 'blog').Blog
-  , Network = require(lib_dir + 'network').Network;
+  , Blog = require('../lib/blog').Blog
+  , Network = require('../lib/network').Network;
 
 describe('Network', function () {
 

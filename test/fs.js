@@ -1,8 +1,6 @@
-var lib_dir = process.env.JS_COV ? '../lib-cov/': '../lib/';
-
 var assert = require('assert')
-  , FileSystemLoader = require(lib_dir + 'loaders/fs').FileSystemLoader
-  , Blog = require(lib_dir + 'blog').Blog
+  , FileSystemLoader = require('../lib/loaders/fs').FileSystemLoader
+  , Blog = require('../lib/blog').Blog
   , fs = require('fs');
 
 var watch_timeout = 300;

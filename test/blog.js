@@ -1,9 +1,7 @@
-var lib_dir = process.env.JS_COV ? '../lib-cov/': '../lib/';
-
 var assert = require('assert')
-  , Blog = require(lib_dir + 'blog').Blog
-  , StopIteration = require(lib_dir + 'blog').StopIteration
-  , ArrayLoader = require(lib_dir + 'loaders/array').ArrayLoader
+  , Blog = require('../lib/blog').Blog
+  , StopIteration = require('../lib/blog').StopIteration
+  , ArrayLoader = require('../lib/loaders/array').ArrayLoader
   , EventEmitter = require('events').EventEmitter;
 
 function isSorted(posts) {
