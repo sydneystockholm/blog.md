@@ -21,6 +21,7 @@ describe('Blog', function () {
         ]);
         blog.on('load', function () {
             var post = blog.post('foo');
+            assert.equal(blog.context, 'blog');
             assert(post.date instanceof Date);
             assert.equal(post.date.getTime(), new Date('2012-10-01').getTime());
             done();

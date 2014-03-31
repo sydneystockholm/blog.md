@@ -31,6 +31,7 @@ describe('Network', function () {
         ]));
         network.on('load', function () {
             var posts = network.select();
+            assert.equal(network.context, 'network');
             assert.equal(posts.length, 6);
             assert.equal(posts[0].title, 'c');
             assert.equal(posts[1].title, 'bar');
