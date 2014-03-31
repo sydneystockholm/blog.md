@@ -235,5 +235,32 @@ describe('Network', function () {
         });
     });
 
+    it('should let the user fill the remaining slots with random posts', function (done) {
+        var network = new Network();
+        network.add('fooblog', new Blog([
+            { id: 1, title: 'foo', date: '2012-10-01' }
+          , { id: 2, title: 'foo', date: '2012-10-03' }
+          , { id: 3, title: 'bar', date: '2012-10-05' }
+        ]));
+        network.add('barblog', new Blog([
+            { id: 1, title: 'a', date: '2012-10-02' }
+          , { id: 2, title: 'b', date: '2012-10-04' }
+          , { id: 3, title: 'c', date: '2012-10-06' }
+        ]));
+        network.on('load', function () {
+            var posts = network.select({ query: { title: 'bar' }, limit: 6 });
+            assert.equal(posts.length, 1);
+            posts = network.select({ query: { title: 'bar' }, limit: 6, fill: true });
+            assert.equal(posts.length, 6);
+            var seen = {};
+            posts.forEach(function (post) {
+                var id = post.id + ':' + post.title;
+                assert(!(id in seen));
+                seen[id] = true;
+            });
+            done();
+        });
+    });
+
 });
 
