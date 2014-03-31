@@ -212,5 +212,28 @@ describe('Network', function () {
         });
     });
 
+    it('should let the user exclude posts', function (done) {
+        var network = new Network();
+        network.add('fooblog', new Blog([
+            { id: 1, title: 'foo', date: '2012-10-01' }
+          , { id: 2, title: 'foo', date: '2012-10-03' }
+          , { id: 3, title: 'bar', date: '2012-10-05' }
+        ]));
+        network.add('barblog', new Blog([
+            { id: 1, title: 'a', date: '2012-10-02' }
+          , { id: 2, title: 'b', date: '2012-10-04' }
+          , { id: 3, title: 'c', date: '2012-10-06' }
+        ]));
+        network.on('load', function () {
+            var posts = network.select({ not: [ 'barblog:3' ], limit: 1 });
+            assert.equal(posts.length, 1);
+            assert.equal(posts[0].title, 'bar');
+            posts = network.select({ not: { 'barblog:3': true }, limit: 1 });
+            assert.equal(posts.length, 1);
+            assert.equal(posts[0].title, 'bar');
+            done();
+        });
+    });
+
 });
 
