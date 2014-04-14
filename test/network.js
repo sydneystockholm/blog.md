@@ -235,6 +235,31 @@ describe('Network', function () {
         });
     });
 
+    it('should let the user exclude blogs', function (done) {
+        var network = new Network();
+        network.add('fooblog', new Blog([
+            { id: 1, title: 'foo', date: '2012-10-01' }
+          , { id: 2, title: 'foo', date: '2012-10-03' }
+          , { id: 3, title: 'bar', date: '2012-10-05' }
+        ]));
+        network.add('barblog', new Blog([
+            { id: 1, title: 'a', date: '2012-10-02' }
+          , { id: 2, title: 'b', date: '2012-10-04' }
+          , { id: 3, title: 'c', date: '2012-10-06' }
+        ]));
+        network.on('load', function () {
+            var posts = network.select({ not: [ 'barblog' ], limit: 2 });
+            assert.equal(posts.length, 2);
+            assert.equal(posts[0].title, 'bar');
+            assert.equal(posts[1].title, 'foo');
+            posts = network.select({ not: { 'barblog': true }, limit: 2 });
+            assert.equal(posts.length, 2);
+            assert.equal(posts[0].title, 'bar');
+            assert.equal(posts[1].title, 'foo');
+            done();
+        });
+    });
+
     it('should let the user fill the remaining slots with random posts', function (done) {
         var network = new Network();
         network.add('fooblog', new Blog([
