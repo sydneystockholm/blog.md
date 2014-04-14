@@ -287,5 +287,58 @@ describe('Network', function () {
         });
     });
 
+    it('should provide a way to cycle blogs fairly', function (done) {
+        var network = new Network();
+        network.add('fooblog', new Blog([
+            { id: 1, title: 'a', date: '2012-10-01' }
+          , { id: 2, title: 'b', date: '2012-10-03' }
+        ]));
+        network.add('barblog', new Blog([
+            { id: 1, title: 'c', date: '2012-10-05' }
+          , { id: 2, title: 'd', date: '2012-10-06' }
+        ]));
+        network.add('quxblog', new Blog([
+            { id: 1, title: 'e', date: '2012-10-04' }
+          , { id: 2, title: 'f', date: '2012-10-08' }
+        ]));
+        var posts;
+        network.on('load', function () {
+            posts = network.select({ limit: 8, distinct: true });
+            assert.equal(posts.length, 6);
+            assert.equal(posts[0].title, 'f');
+            assert.equal(posts[1].title, 'd');
+            assert.equal(posts[2].title, 'b');
+            assert.equal(posts[3].title, 'c');
+            assert.equal(posts[4].title, 'e');
+            assert.equal(posts[5].title, 'a');
+
+            posts = network.select({ distinct: true });
+            assert.equal(posts.length, 6);
+
+            posts = network.select({ limit: 3, not: ['quxblog'], distinct: true, offset: 1 });
+            assert.equal(posts.length, 3);
+            assert.equal(posts[0].title, 'b');
+            assert.equal(posts[1].title, 'c');
+            assert.equal(posts[2].title, 'a');
+
+            posts = network.select({ limit: 3, not: { quxblog: true }, distinct: true });
+            assert.equal(posts.length, 3);
+            assert.equal(posts[0].title, 'd');
+            assert.equal(posts[1].title, 'b');
+            assert.equal(posts[2].title, 'c');
+
+            posts = network.select({ limit: 3, not: { quxblog: true }, distinct: true, page: 2 });
+            assert.equal(posts.length, 1);
+            assert.equal(posts[0].title, 'a');
+
+            posts = network.select({ limit: 3, not: { quxblog: true }, distinct: true, page: 3 });
+            assert.equal(posts.length, 0);
+
+            assert.equal(network.select({ limit: -1, distinct: true }).length, 0);
+
+            done();
+        });
+    });
+
 });
 
